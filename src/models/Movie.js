@@ -10,7 +10,30 @@ WE NEED TO SHARE THE SAME DB SO NICO CAN CHECK OUT EVERYBODYS PROJECT.
 const YOUR_USERNAME = "jworks";
 
 const MovieSchema = mongoose.Schema({
-  // HERE YOU HAVE TO CREATE AND COMPLETE THE MOVIE SCHEMA
+  title: {
+    type: String,
+    required: "Title is required"
+  },
+  year: {
+    type: Number,
+    required: "Year is required"
+  },
+  rating: {
+    type: Number,
+    required: "Rating is required"
+  },
+  synopsis: {
+    type: String,
+    required: "Synopsis is required"
+  },
+  genres: [{
+    type: String,
+    required: "Genres are required"
+  }],
+  uploadedAt: {
+    type: Date,
+    default: Date.now
+  }
 });
 
 if (YOUR_USERNAME === null || typeof YOUR_USERNAME !== "string") {

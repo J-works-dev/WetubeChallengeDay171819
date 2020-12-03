@@ -7,8 +7,12 @@ You can do Movie.find() or whatever you need like normal!
 import Movie from "./models/Movie";
 
 export const home = async (req, res) => {
-  // res.render("home", { movies: await Movie.find(), pageTitle: "Home" });
-  res.render("home", { pageTitle: "Home" });
+  try {
+    res.render("home", { movies: await Movie.find(), pageTitle: "Home" });
+  } catch(error) {
+    console.log(error);
+    res.render("home", { pageTitle: "Home" });
+  }
 };
 
 // export const movieDetail = async (req, res) => {
