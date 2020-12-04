@@ -3,8 +3,10 @@ extends templates/layout
 block content
   h1=pageTitle
   .form-container
-    form(action="/add", method="post")
+    form(action="/create", method="post")
       input(type="text", name="title", placeholder="Title", required=true)
+      input(type="number", name="year", placeholder="Year", required=true, accept="number")
+      input(type="number", name="rating", placeholder="rating", required=true, step="0.1")
       textarea(name="synopsis", placeholder="Synopsis", required=true)
       input(type="text", name="genres", placeholder="Genres", required=true)
       input(type="submit", value="Add Movie")

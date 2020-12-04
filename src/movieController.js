@@ -8,44 +8,105 @@ import Movie from "./models/Movie";
 
 export const home = async (req, res) => {
   try {
-    res.render("home", { movies: await Movie.find(), pageTitle: "Home" });
-  } catch(error) {
+    console.log(Movie);
+    const movies = await Movie.find({});
+    res.render("home", { movies, pageTitle: "Home" });
+  } catch (error) {
     console.log(error);
-    res.render("home", { pageTitle: "Home" });
+    res.render("home", { pageTitle: "Home", movies: [] });
   }
 };
 
-// export const movieDetail = async (req, res) => {
-//   const {
-//     params: { id }
-//   } = req;
-//   const movie = await Movie.findById(id);
-//   if (!movie) {
-//     res.render("404", { pageTitle: "Movie not found" });
-//   }
-//   return res.render("detail", { movie });
-// };
+export const movieDetail = async (req, res) => {
+  const {
+    params: { id }
+  } = req;
+  try {
+    const movie = await Movie.findById(id);
+    if (!movie) {
+      res.render("404", { pageTitle: "Movie not found" });
+    }
+    return res.render("detail", { pageTitle: movie.title, movie });
+  } catch (error) {
+    console.log(error);
+    res.redirect("/");
+  }
+};
 
 export const getCreateMovie = (req, res) =>
   res.render("create", { pageTitle: "Add Movie" });
 
-export const postCreateMovie = (req, res) => {
-  // const {
-  //   body: { title, synopsis, genres }
-  // } = req;
-  // const genreArray = genres.trim().split(",");
-  // console.log(genreArray);
-  // const movie = { title, synopsis, genres: genreArray };
-  // addMovie(movie);
+export const postCreateMovie = async (req, res) => {
+  const {
+    body: { title, year, rating, synopsis, genres }
+  } = req;
+  const genreArray = genres.trim().split(",");
+  console.log(title, year, rating, synopsis, genreArray);
+  const newMovie = await Movie.create({
+    title,
+    year,
+    rating,
+    synopsis,
+    genres: genreArray
+  });
+  console.log(newMovie);
   res.redirect("/");
 };
 
-export const getEdit = (req, res) => {
-  res.render("edit", { pageTitle: "Edit Movie" });
+export const getEdit = async (req, res) => {
+  const {
+    params: { id }
+  } = req;
+  try {
+    const movie = await Movie.findById(id);
+    res.render("edit", { pageTitle: `Edit ${movie.title}`, movie });
+  } catch (error) {
+    res.redirect("/");
+  }
 };
-export const postEdit = (req, res) => {
-  res.redirect("detail");
+export const postEdit = async (req, res) => {
+  const {
+    params: { id },
+    body: { title, year, rating, synopsis, genres }
+  } = req;
+  const genreArray = genres.trim().split(",");
+  try {
+    await Movie.findOneAndUpdate(
+      { _id: id },
+      { title, year, rating, synopsis, genres: genreArray }
+    );
+    res.redirect();
+  } catch (error) {
+    res.redirect("/");
+  }
 };
-export const search = (req, res) => {
-  res.render("search", { pageTitle: "Search" });
+export const search = async (req, res) => {
+  const {
+    query: { year, rating }
+  } = req;
+  let movies = [];
+  try {
+    // movies = await Movie.find({ year: { $gte: year}})
+    if (year) {
+      movies = await Movie.find({ year: { $gte: Number(year) } });
+      res.render("search", { movies, pageTitle: `Searching for ${year}` });
+    } else if (rating) {
+      const movies = await Movie.find({ rating: { $gte: Number(rating) } });
+      res.render("home", { movies, pageTitle: `Searching for ${rating}` });
+    } else {
+      res.render("search", { pageTitle: "No result" });
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const deleteMovie = async (req, res) => {
+  const {
+    params: { id }
+  } = req;
+  try {
+    await Movie.findOneAndRemove({ _id: id });
+  } catch (error) {}
+  res.redirect("/");
 };

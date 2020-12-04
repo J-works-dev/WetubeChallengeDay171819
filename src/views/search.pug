@@ -1,0 +1,9 @@
+extends templates/layout
+include mixins/movie
+
+block content
+  h1=pageTitle
+  if video.length === 0
+    h5 No Videos Found
+  each movie in movies
+    +movieMixin(movie)

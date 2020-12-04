@@ -9,7 +9,7 @@ WE NEED TO SHARE THE SAME DB SO NICO CAN CHECK OUT EVERYBODYS PROJECT.
 */
 const YOUR_USERNAME = "jworks";
 
-const MovieSchema = mongoose.Schema({
+const MovieSchema = new mongoose.Schema({
   title: {
     type: String,
     required: "Title is required"
@@ -26,10 +26,12 @@ const MovieSchema = mongoose.Schema({
     type: String,
     required: "Synopsis is required"
   },
-  genres: [{
-    type: String,
-    required: "Genres are required"
-  }],
+  genres: [
+    {
+      type: String,
+      required: "Genres are required"
+    }
+  ],
   uploadedAt: {
     type: Date,
     default: Date.now
