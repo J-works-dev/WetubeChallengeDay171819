@@ -3,7 +3,7 @@ include mixins/movie
 
 block content
   h1=pageTitle
-  if video.length === 0
-    h5 No Videos Found
+  if movies.length === 0
+    h5 No Movies Found
   each movie in movies
     +movieMixin(movie)

@@ -20,10 +20,11 @@ movieRouter.post("/create", postCreateMovie);
 
 movieRouter.get("/search", search);
 
-movieRouter.get(routes.detail(), movieDetail);
-
 movieRouter.get(routes.editMovie(), getEdit);
 movieRouter.post(routes.editMovie(), postEdit);
 
-movieRouter.get(routes.deleteMovie(), deleteMovie);
+movieRouter.get(":id/delete", deleteMovie);
+
+movieRouter.get(routes.movieDetail(), movieDetail);
+
 export default movieRouter;

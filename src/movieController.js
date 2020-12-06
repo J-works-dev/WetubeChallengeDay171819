@@ -5,10 +5,11 @@ So import Movie from "./models"; will work!
 You can do Movie.find() or whatever you need like normal!
 */
 import Movie from "./models/Movie";
+import routes from "./routes";
 
 export const home = async (req, res) => {
   try {
-    console.log(Movie);
+    // console.log(Movie);
     const movies = await Movie.find({});
     res.render("home", { movies, pageTitle: "Home" });
   } catch (error) {
@@ -41,7 +42,7 @@ export const postCreateMovie = async (req, res) => {
     body: { title, year, rating, synopsis, genres }
   } = req;
   const genreArray = genres.trim().split(",");
-  console.log(title, year, rating, synopsis, genreArray);
+  // console.log(title, year, rating, synopsis, genreArray);
   const newMovie = await Movie.create({
     title,
     year,
@@ -75,7 +76,7 @@ export const postEdit = async (req, res) => {
       { _id: id },
       { title, year, rating, synopsis, genres: genreArray }
     );
-    res.redirect();
+    res.redirect(routes.movieDetail(id));
   } catch (error) {
     res.redirect("/");
   }
@@ -89,10 +90,16 @@ export const search = async (req, res) => {
     // movies = await Movie.find({ year: { $gte: year}})
     if (year) {
       movies = await Movie.find({ year: { $gte: Number(year) } });
-      res.render("search", { movies, pageTitle: `Searching for ${year}` });
+      res.render("search", {
+        movies,
+        pageTitle: `Searching for Year after ${year}`
+      });
     } else if (rating) {
       const movies = await Movie.find({ rating: { $gte: Number(rating) } });
-      res.render("home", { movies, pageTitle: `Searching for ${rating}` });
+      res.render("home", {
+        movies,
+        pageTitle: `Searching for Rating over ${rating}`
+      });
     } else {
       res.render("search", { pageTitle: "No result" });
     }

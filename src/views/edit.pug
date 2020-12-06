@@ -3,11 +3,11 @@ extends templates/layout
 block content
   h1=pageTitle
   .form-container
-    form(action="/edit", method="post")
+    form(action=`/${movie.id}/edit`, method="post")
       input(type="text", name="title", placeholder="Title", value=movie.title)
       input(type="number", name="year", placeholder="Year", value=movie.year, accept="number")
       input(type="number", name="rating", placeholder="rating", value=movie.rating, step="0.1")
       textarea(name="synopsis", placeholder="Synopsis")= movie.synopsis
       input(type="text", name="genres", placeholder="Genres", value=movie.genres)
       input(type="submit", value="Edit Movie")
-  a(href=routes.deleteMovie(movie.id)) Delete Movie
+  a(href=`/${movie.id}/delete`) Delete Movie
