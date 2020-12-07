@@ -8,6 +8,6 @@ block content
       input(type="number", name="year", placeholder="Year", value=movie.year, accept="number")
       input(type="number", name="rating", placeholder="rating", value=movie.rating, step="0.1")
       textarea(name="synopsis", placeholder="Synopsis")= movie.synopsis
-      input(type="text", name="genres", placeholder="Genres", value=movie.genres)
+      input(type="text", name="genres", placeholder="Genres", value=movie.genres.join(", "))
       input(type="submit", value="Edit Movie")
   a(href=`/${movie.id}/delete`) Delete Movie

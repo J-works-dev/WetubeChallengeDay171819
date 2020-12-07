@@ -50,8 +50,8 @@ export const postCreateMovie = async (req, res) => {
     synopsis,
     genres: genreArray
   });
-  console.log(newMovie);
-  res.redirect("/");
+  // console.log(newMovie);
+  res.redirect(`/${newMovie.id}`);
 };
 
 export const getEdit = async (req, res) => {
@@ -72,10 +72,13 @@ export const postEdit = async (req, res) => {
   } = req;
   const genreArray = genres.trim().split(",");
   try {
-    await Movie.findOneAndUpdate(
-      { _id: id },
-      { title, year, rating, synopsis, genres: genreArray }
-    );
+    await Movie.findByIdAndUpdate(id, {
+      title,
+      year,
+      rating,
+      synopsis,
+      genres: genreArray
+    });
     res.redirect(routes.movieDetail(id));
   } catch (error) {
     res.redirect("/");
@@ -113,7 +116,7 @@ export const deleteMovie = async (req, res) => {
     params: { id }
   } = req;
   try {
-    await Movie.findOneAndRemove({ _id: id });
+    await Movie.findByIdAndDelete(id);
   } catch (error) {}
   res.redirect("/");
 };

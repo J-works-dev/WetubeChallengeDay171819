@@ -4,7 +4,7 @@ block content
   h1=pageTitle
   .form-container
     form(action="/create", method="post")
-      input(type="text", name="title", placeholder="Title", required=true)
+      input(type="text", name="title", placeholder="Title", required=true, minlength="3")
       input(type="number", name="year", placeholder="Year", required=true, accept="number")
       input(type="number", name="rating", placeholder="rating", required=true, step="0.1")
       textarea(name="synopsis", placeholder="Synopsis", required=true)
