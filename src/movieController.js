@@ -99,12 +99,12 @@ export const search = async (req, res) => {
       });
     } else if (rating) {
       const movies = await Movie.find({ rating: { $gte: Number(rating) } });
-      res.render("home", {
+      res.render("Search", {
         movies,
         pageTitle: `Searching for Rating over ${rating}`
       });
     } else {
-      res.render("search", { pageTitle: "No result" });
+      res.render("Home", { pageTitle: "No result" });
     }
   } catch (error) {
     console.log(error);
